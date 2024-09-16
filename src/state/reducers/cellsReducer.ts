@@ -61,7 +61,7 @@ const cellsSlice = createSlice({
 
       const foundIndex = state.order.findIndex((cellId) => cellId === id);
       if (foundIndex < 0) {
-        state.order.unshift(newCell.id);
+        state.order.push(newCell.id);
       } else {
         state.order.splice(foundIndex, 0, newCell.id);
       }

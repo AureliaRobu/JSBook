@@ -1,14 +1,14 @@
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import { Provider } from 'react-redux';
-import TextEditor from './TextEditor';
 import { store } from '../state/store';
+import CellList from './CellList';
 
 export default function App() {
   return (
-    <div>
-      <Provider store={store}>
-        <TextEditor />
-      </Provider>
-    </div>
+    <Provider store={store}>
+      <div>
+        <CellList />
+      </div>
+    </Provider>
   );
 }
