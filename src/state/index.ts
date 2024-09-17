@@ -1,2 +1,3 @@
-import * from './store.ts';
-import * from './reducers/cellsReducer';
+export * from './store';
+export * from './reducers/cellsReducer';
+export * from './cell';
