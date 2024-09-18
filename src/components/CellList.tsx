@@ -1,15 +1,12 @@
-import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useCells } from '../hooks/useCells';
 import CellListItem from './CellListItem';
 
 function CellList() {
-  const cells = useTypedSelector(({ cells: { order, data } }) => {
-    return order.map((id) => {
-      return data[id];
-    });
-  });
+  const { cells, cellOrder } = useCells();
+  const orderedCells = cellOrder.map((id) => cells[id]);
   return (
     <div>
-      {cells.map((cell) => (
+      {orderedCells.map((cell) => (
         <CellListItem key={cell.id} cell={cell} />
       ))}
     </div>
