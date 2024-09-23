@@ -23,7 +23,7 @@
     "axios": "^1.4.0",
     "bulmaswatch": "^0.8.1",
     "country-state-city": "^3.2.1",
-    "esbuild-wasm": "^0.23.1",
+    "esbuild-wasm": "^0.24.0",
     "immer": "^10.1.1",
     "leaflet": "^1.9.4",
     "localforage": "^1.10.0",

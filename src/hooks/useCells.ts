@@ -5,7 +5,7 @@ import {
   updateCell,
   deleteCell,
   moveCell,
-  insertCellBefore,
+  insertCellAfter,
   CellTypes,
   Direction,
 } from '../state';
@@ -42,7 +42,7 @@ export const useCells = () => {
 
   const insertNewCell = useCallback(
     (id: string | null, type: CellTypes) => {
-      dispatch(insertCellBefore({ id, type }));
+      dispatch(insertCellAfter({ id, type }));
     },
     [dispatch]
   );

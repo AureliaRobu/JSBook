@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cellsReducer, { insertCellBefore } from './reducers/cellsReducer';
+import cellsReducer, { insertCellAfter } from './reducers/cellsReducer';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +10,5 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-store.dispatch(insertCellBefore({ id: null, type: 'code' }));
-store.dispatch(insertCellBefore({ id: null, type: 'text' }));
+store.dispatch(insertCellAfter({ id: null, type: 'code' }));
+store.dispatch(insertCellAfter({ id: null, type: 'text' }));

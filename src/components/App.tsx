@@ -6,9 +6,7 @@ import CellList from './CellList';
 export default function App() {
   return (
     <Provider store={store}>
-      <div>
-        <CellList />
-      </div>
+      <CellList />
     </Provider>
   );
 }
