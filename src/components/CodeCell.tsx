@@ -1,31 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CodeEditor from './CodeEditor';
 import Preview from './Preview';
-import bundler from '../bundler';
 import Resizable from './Resizable';
 import { Cell } from '../state';
 import { useCells } from '../hooks/useCells';
+import { useBundles } from '../hooks/useBundles';
 
 interface CodeCellProps {
   cell: Cell;
 }
 
 function CodeCell({ cell }: CodeCellProps) {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-
   const { updateCellContent } = useCells();
+  const { createBundle, bundles } = useBundles();
+  const bundle = bundles[cell.id];
+  console.log(bundle);
 
   useEffect(() => {
+    if (!bundle) {
+      const timer = setTimeout(async () => {
+        await createBundle(cell.id, cell.content);
+      }, 0);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
     const timer = setTimeout(async () => {
-      const output = await bundler(cell.content);
-      setCode(output.code);
-      setError(output.error);
+      await createBundle(cell.id, cell.content);
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
+  }, [createBundle, cell.id, cell.content]);
 
   return (
     <Resizable direction="vertical">
@@ -42,7 +48,11 @@ function CodeCell({ cell }: CodeCellProps) {
             initialValue={cell.content}
           />
         </Resizable>
-        <Preview code={code} error={error} />
+        {!bundle || bundle.loading ? (
+          <div>Loading...</div>
+        ) : (
+          <Preview code={bundle.code} error={bundle.err} />
+        )}
       </div>
     </Resizable>
   );
