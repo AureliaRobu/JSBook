@@ -1,3 +1,4 @@
+import './CodeCell.css';
 import { useEffect } from 'react';
 import CodeEditor from './CodeEditor';
 import Preview from './Preview';
@@ -48,11 +49,17 @@ function CodeCell({ cell }: CodeCellProps) {
             initialValue={cell.content}
           />
         </Resizable>
-        {!bundle || bundle.loading ? (
-          <div>Loading...</div>
-        ) : (
-          <Preview code={bundle.code} error={bundle.err} />
-        )}
+        <div className="progress-wrapper">
+          {!bundle || bundle.loading ? (
+            <div className="progress-cover">
+              <progress className="progress is-small is-primary" max="100">
+                Loading
+              </progress>
+            </div>
+          ) : (
+            <Preview code={bundle.code} error={bundle.err} />
+          )}
+        </div>
       </div>
     </Resizable>
   );
