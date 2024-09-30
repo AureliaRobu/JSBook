@@ -12,27 +12,27 @@ interface CodeCellProps {
 }
 
 function CodeCell({ cell }: CodeCellProps) {
-  const { updateCellContent } = useCells();
+  const { updateCellContent, getCumulativeCode } = useCells();
   const { createBundle, bundles } = useBundles();
   const bundle = bundles[cell.id];
-  console.log(bundle);
+  const cumulativeCode = getCumulativeCode(cell.id);
 
   useEffect(() => {
     if (!bundle) {
       const timer = setTimeout(async () => {
-        await createBundle(cell.id, cell.content);
+        await createBundle(cell.id, cumulativeCode.join('\n'));
       }, 0);
       return () => {
         clearTimeout(timer);
       };
     }
     const timer = setTimeout(async () => {
-      await createBundle(cell.id, cell.content);
+      await createBundle(cell.id, cumulativeCode.join('\n'));
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [createBundle, cell.id, cell.content]);
+  }, [createBundle, cell.id, cumulativeCode.join('\n')]);
 
   return (
     <Resizable direction="vertical">

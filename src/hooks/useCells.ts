@@ -47,6 +47,37 @@ export const useCells = () => {
     [dispatch]
   );
 
+  const getCumulativeCode = useCallback(
+    (cellId: string): string[] => {
+      const showFunc = `
+      function show(value) {
+        const root = document.getElementById('root');
+        if (typeof value === 'object') {
+          if (value.$$typeof && value.props) {
+            ReactDOM.render(value, root);
+          } else {
+            root.innerHTML = JSON.stringify(value);
+          }
+        } else {
+          root.innerHTML = value;
+        }
+      }
+    `;
+
+      const orderedCells = order.map((id) => cells[id]);
+      const targetIndex = orderedCells.findIndex((cell) => cell.id === cellId);
+      const cumulativeCode = [
+        showFunc,
+        ...orderedCells
+          .slice(0, targetIndex + 1)
+          .filter((cell) => cell.type === 'code')
+          .map((cell) => cell.content),
+      ];
+      return cumulativeCode;
+    },
+    [cells, order]
+  );
+
   return {
     cells,
     cellOrder: order,
@@ -56,5 +87,6 @@ export const useCells = () => {
     deleteCellById,
     moveCellInDirection,
     insertNewCell,
+    getCumulativeCode,
   };
 };
