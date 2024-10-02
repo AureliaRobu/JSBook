@@ -16,23 +16,24 @@ function CodeCell({ cell }: CodeCellProps) {
   const { createBundle, bundles } = useBundles();
   const bundle = bundles[cell.id];
   const cumulativeCode = getCumulativeCode(cell.id);
+  console.log(cumulativeCode);
 
   useEffect(() => {
     if (!bundle) {
       const timer = setTimeout(async () => {
-        await createBundle(cell.id, cumulativeCode.join('\n'));
+        await createBundle(cell.id, cumulativeCode);
       }, 0);
       return () => {
         clearTimeout(timer);
       };
     }
     const timer = setTimeout(async () => {
-      await createBundle(cell.id, cumulativeCode.join('\n'));
+      await createBundle(cell.id, cumulativeCode);
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [createBundle, cell.id, cumulativeCode.join('\n')]);
+  }, [createBundle, cell.id, cumulativeCode]);
 
   return (
     <Resizable direction="vertical">

@@ -48,9 +48,9 @@ export const useCells = () => {
   );
 
   const getCumulativeCode = useCallback(
-    (cellId: string): string[] => {
+    (cellId: string): string => {
       const showFunc = `
-      function show(value) {
+      var show = function(value) {
         const root = document.getElementById('root');
         if (typeof value === 'object') {
           if (value.$$typeof && value.props) {
@@ -63,17 +63,23 @@ export const useCells = () => {
         }
       }
     `;
+      const showFuncNoOp = `var show = () => {}`;
 
       const orderedCells = order.map((id) => cells[id]);
-      const targetIndex = orderedCells.findIndex((cell) => cell.id === cellId);
-      const cumulativeCode = [
-        showFunc,
-        ...orderedCells
-          .slice(0, targetIndex + 1)
-          .filter((cell) => cell.type === 'code')
-          .map((cell) => cell.content),
-      ];
-      return cumulativeCode;
+      const cumulativeCode: string[] = [];
+
+      for (const cell of orderedCells) {
+        if (cell.type === 'code') {
+          if (cell.id === cellId) {
+            cumulativeCode.push(showFunc);
+          } else {
+            cumulativeCode.push(showFuncNoOp);
+          }
+          cumulativeCode.push(cell.content);
+        }
+      }
+
+      return cumulativeCode.join('\n');
     },
     [cells, order]
   );

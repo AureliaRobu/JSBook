@@ -1,3 +1,4 @@
+import './CellList.css';
 import { Fragment } from 'react';
 import { useCells } from '../hooks/useCells';
 import CellListItem from './CellListItem';
@@ -7,7 +8,7 @@ function CellList() {
   const { cells, cellOrder } = useCells();
   const orderedCells = cellOrder.map((id) => cells[id]);
   return (
-    <div>
+    <div className="cell-list">
       <AddCell forceVisible={orderedCells.length === 0} previousCellId={null} />
 
       {orderedCells.map((cell) => (
